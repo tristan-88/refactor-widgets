@@ -1,26 +1,20 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-class AutoComplete extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputVal: '',
-    };
-  }
+const AutoComplete = ({names}) => {
 
-  handleInput = (e) => {
-    this.setState({ inputVal: e.target.value });
-  }
+  const [inputVal, setInputVal] = useState('')
 
-  selectName = (e) => {
+  const handleInput = (e) => {
+    setInputVal(e.target.value);
+  };
+
+  const selectName = (e) => {
     const name = e.target.innerText;
-    this.setState({ inputVal: name });
-  }
+    setInputVal( name );
+  };
 
-  matches = () => {
-    const { inputVal } = this.state;
-    const { names } = this.props;
+  const matches = () => {
     const inputLength = inputVal.length;
     const matches = [];
 
@@ -36,37 +30,35 @@ class AutoComplete extends React.Component {
     if (matches.length === 0) matches.push('No matches');
 
     return matches;
-  }
+  };
 
-  render() {
-    const results = this.matches().map((result) => (
-      <CSSTransition
-        key={result}
-        classNames="result"
-        timeout={{ enter: 500, exit: 300 }}
-      >
-        <li>{result}</li>
-      </CSSTransition>
-    ));
+  const results = matches().map((result) => (
+    <CSSTransition
+      key={result}
+      classNames="result"
+      timeout={{ enter: 500, exit: 300 }}
+    >
+      <li>{result}</li>
+    </CSSTransition>
+  ));
 
-    return (
-      <section>
-        <h1>Autocomplete</h1>
-        <div className="auto">
-          <input
-            onChange={this.handleInput}
-            value={this.state.inputVal}
-            placeholder="Search..."
-          />
-          <ul className="auto-dropdown" onClick={this.selectName}>
-            <TransitionGroup>
-              {results}
-            </TransitionGroup>
-          </ul>
-        </div>
-      </section>
-    );
-  }
-};
+  return (
+    <section>
+      <h1>Autocomplete</h1>
+      <div className="auto">
+        <input
+          onChange={handleInput}
+          value={inputVal}
+          placeholder="Search..."
+        />
+        <ul className="auto-dropdown" onClick={selectName}>
+          <TransitionGroup>
+            {results}
+          </TransitionGroup>
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 export default AutoComplete;
