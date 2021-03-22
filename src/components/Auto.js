@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const AutoComplete = ({names}) => {
